@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  repository: jahudev/razas-api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 8080
+  #nodePort: 30081
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
