@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: razas-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: razas-api
+  template:
+    metadata:
+      labels:
+        app: razas-api
+    spec:
+      containers:
+        - name: razas-api
+          image: razas-api:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
