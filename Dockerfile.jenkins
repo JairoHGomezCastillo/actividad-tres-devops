@@ -1,0 +1,20 @@
+FROM jenkins/jenkins:lts
+
+USER root
+
+# Instala Docker CLI
+RUN apt-get update && apt-get install -y ca-certificates curl gnupg lsb-release \
+    && mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list \
+    && apt-get update && apt-get install -y docker-ce-cli
+
+# Instala kubectl y helm
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
+    && chmod +x kubectl && mv kubectl /usr/local/bin/ \
+    && curl -LO https://get.helm.sh/helm-v3.15.2-linux-amd64.tar.gz \
+    && tar -zxvf helm-v3.15.2-linux-amd64.tar.gz \
+    && mv linux-amd64/helm /usr/local/bin/helm \
+    && rm -rf linux-amd64
+
+USER jenkins

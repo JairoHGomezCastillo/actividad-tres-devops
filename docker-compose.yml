@@ -5,4 +5,19 @@ services:
     image: razas-api
     container_name: razas-api
     ports:
-      - "8081:8080"   # host:container
+      - "8081:8080"
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /Users/jaigomez/.kube:/var/jenkins_home/.kube:ro
+    restart: unless-stopped
+volumes:
+  jenkins_home:
