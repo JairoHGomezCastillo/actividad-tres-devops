@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        disableConcurrentBuilds()
+      }
+
     environment {
         IMAGE_NAME = "razas-api"
         IMAGE_TAG = "v${BUILD_NUMBER}"
