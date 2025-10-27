@@ -10,6 +10,7 @@ pipeline {
         IMAGE_TAG = "v${BUILD_NUMBER}"
         CHART_PATH = "helm-chart/razas-api"
         NAMESPACE = "default"
+        DOCKERHUB_REPO = "jahudev/razas-api"
     }
 
     stages {
