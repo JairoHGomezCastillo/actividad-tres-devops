@@ -33,6 +33,35 @@ pipeline {
             }
         }
 
+        // Este stage actualiza el Helm chart para que ArgoCD lo detecte y haga sync automático
+        stage('Update Helm values and push (GitOps for ArgoCD)') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+              sh """
+                set -eux
+
+                # Asegura estar en main con lo último
+                git fetch origin main
+                git checkout main
+                git pull --rebase origin main
+
+                echo "Updating Helm values.yaml tag -> ${IMAGE_TAG}"
+                sed -i 's/^\\s*tag:\\s*.*/  tag: ${IMAGE_TAG}/' ${CHART_PATH}/values.yaml
+
+                git config user.email "jenkins@local"
+                git config user.name "Jenkins CI"
+
+                git add ${CHART_PATH}/values.yaml
+                git commit -m "ci: bump image tag to ${IMAGE_TAG}"
+
+                # Cambia la URL de origin para incluir credenciales y poder hacer push
+                git remote set-url origin https://${GIT_USER}:${GIT_TOKEN}@github.com/JairoHGomezCastillo/actividad-tres-devops.git
+                git push origin HEAD:main
+              """
+            }
+          }
+        }
+        /*
         stage('Deploy to Kubernetes with Helm') {
             steps {
                 sh '''
@@ -47,7 +76,7 @@ pipeline {
                   kubectl get pods -n ${NAMESPACE}
                 '''
             }
-        }
+        }*/
     }
 
     post {

@@ -11,10 +11,10 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
-	// Endpoint REST (GET y POST) // test cambio
+	// Endpoint REST (GET y POST) test cambio
 	mux.HandleFunc("/razas", handlers.HandleRazas)
 
-	// Página HTML
+	// Página HTML //test cambio
 	mux.HandleFunc("/", handlers.RenderRazaTable)
 
 	// Aplicar middleware de logging
