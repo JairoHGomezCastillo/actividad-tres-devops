@@ -33,6 +33,19 @@ pipeline {
             }
         }
 
+        stage('Push Docker Image') {
+          steps {
+            withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
+              sh """
+                echo "\nTagging and pushing to Docker Hub..."
+                docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${DOCKERHUB_REPO}:${IMAGE_TAG}
+                echo '${DH_PASS}' | docker login -u '${DH_USER}' --password-stdin
+                docker push ${DOCKERHUB_REPO}:${IMAGE_TAG}
+              """
+            }
+          }
+        }
+
         // Este stage actualiza el Helm chart para que ArgoCD lo detecte y haga sync automático
         stage('Update Helm values and push (GitOps for ArgoCD)') {
           steps {
