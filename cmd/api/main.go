@@ -14,7 +14,7 @@ func main() {
 	// Endpoint REST (GET y POST) test cambio
 	mux.HandleFunc("/razas", handlers.HandleRazas)
 
-	// Página HTML //test cambio
+	// Página HTML
 	mux.HandleFunc("/", handlers.RenderRazaTable)
 
 	// Aplicar middleware de logging
