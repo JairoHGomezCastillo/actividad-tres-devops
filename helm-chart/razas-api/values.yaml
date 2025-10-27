@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: jahudev/razas-api
-  tag: v11
+  tag: v12
   pullPolicy: IfNotPresent
 
 service:
